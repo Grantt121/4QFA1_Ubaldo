@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .error {
+            border: 3px solid red;
+        }
+        .success {
+            border: 3px solid green;
+        }
+    </style>
+</head>
+<body>
+    <form id="signup">
+        <fieldset>
+            <legend>Sign Up:</legend>
+            <label for="Name">Name:</label><br>
+            <input type="text" id="Name" name="Name" onblur="validateInput(this)" onfocus="resetBorder(this)"><br>
+            <label for="Username">Preferred Username:</label><br>
+            <input type="text" id="Username" name="Username" onblur="validateInput(this)" onfocus="resetBorder(this)"><br>
+            <label for="Password">Password:</label><br>
+            <input type="Password" id="Password" name="Password" onblur="validateInput(this)" onfocus="resetBorder(this)"><br>
+            <label for="Email">Email:</label><br>
+            <input type="Email" id="Email" name="Email" required onblur="validateInput(this)" onfocus="resetBorder(this)"><br>
+            <label for="Gender">Gender:</label><br>
+            <select id="Gender" name="Gender" onblur="validateInput(this)" onfocus="resetBorder(this)">
+                <option></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Prefer not to mention">Prefer not to mention</option>
+            </select><br>
+            <label for="Address">Address:</label><br>
+            <textarea id="Address" name="Address" rows="4" cols="50" required onblur="validateInput(this)" onfocus="resetBorder(this)"></textarea><br>
+            <label for="Comments">Interests:</label><br>
+            <textarea id="tArea" name="Comments" rows="4" cols="50" onblur="validateInput(this)" onfocus="resetBorder(this)"></textarea><br>
+            <input type="submit" value="Submit">
+            <input type="reset" value="Clear">
+        </fieldset>
+    </form>
+    
+    <div id="output">
+        <fieldset>
+            <legend>Output:</legend>
+            <p id="outputData"></p>
+        </fieldset>
+    </div>
+
+    <script>
+        function validateInput(element) {
+            if (element.value.trim() === "") {
+                element.classList.add("error");
+            } else {
+                element.classList.remove("error");
+                element.classList.add("success");
+            }
+        }
+
+        function resetBorder(element) {
+            element.classList.remove("error", "success");
+        }
+
+        document.getElementById("signup").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var isValid = true;
+            var requiredFields = document.querySelectorAll("#signup input[required], #signup select[required], #signup textarea[required]");
+            requiredFields.forEach(function(field) {
+                if (field.value.trim() === "") {
+                    field.classList.add("error");
+                    isValid = false;
+                }
+            });
+            if (isValid) {
+                var outputData = "";
+                var formData = new FormData(this);
+                formData.forEach(function(value, key) {
+                    outputData += key + ": " + value + "<br>";
+                });
+                document.getElementById("outputData").innerHTML = outputData;
+            } else {
+                alert("Please fill out all required fields.");
+            }
+        });
+</script>
+</body>
+</html>
